@@ -1,7 +1,16 @@
 ﻿import pygame
 import random
 import os
-
+# не рабовает ошибка 
+#File "c:/Users/Admin/Desktop/yandex/тест4.py", line 23, in __init__
+#    self.load_image()
+#  File "c:/Users/Admin/Desktop/yandex/тест4.py", line 65, in load_image
+#    fullname = os.path.join('data', name)
+#  File "C:\python\lib\ntpath.py", line 117, in join
+#    genericpath._check_arg_types('join', path, *paths)
+#  File "C:\python\lib\genericpath.py", line 152, in _check_arg_types
+#    raise TypeError(f'{funcname}() argument must be str, bytes, or '
+#TypeError: join() argument must be str, bytes, or os.PathLike object, not 'Breakout'
 
 class Breakout:
     def __init__(self):
@@ -19,13 +28,12 @@ class Breakout:
         screen_rect = (0, 0, self.width, self.height)
         self.all_sprites = pygame.sprite.Group()
         self.tiles_group = pygame.sprite.Group()
-        self.player_group = pygame.sprite.Group()
         self.load_image()
         self.load_level()
-        self.generate_level()
         self.tile_images = {'wall': load_image('box.png'), 'empty': load_image('grass.png')}
         self.tile_width = self.tile_height = 50
-        #level_x, level_y = generate_level(load_level('level.txt'))
+        self.generate_level()
+        level_x, level_y = generate_level(load_level('level.txt'))
         self.start()
 
     def start(self):
@@ -40,9 +48,11 @@ class Breakout:
                 if event.type == pygame.MOUSEMOTION:
                     flag = True
                     self.cord = event.pos[0]
-            pygame.draw.rect(self.screen, pygame.Color('white'), (min(self.cord, 720), 760, 80, 30))
             #self.polygon()
             self.ball()
+            self.all_sprites.update()
+            self.screen.fill((0, 0, 0))
+            self.all_sprites.draw(self.screen)
             self.clock.tick(100)
             pygame.display.flip()
 
@@ -84,9 +94,9 @@ class Breakout:
 
     class Tile(pygame.sprite.Sprite):
         def __init__(self, tile_type, pos_x, pos_y):
-            super().__init__(tiles_group, all_sprites)
-            self.image = tile_images[tile_type]
-            self.rect = self.image.get_rect().move(tile_width * pos_x, tile_height * pos_y)  
+            super().__init__(self.tiles_group, self.all_sprites)
+            self.image = self.tile_images[tile_type]
+            self.rect = self.image.get_rect().move(self.tile_width * pos_x, self.tile_height * pos_y)  
     
     def generate_level(level):
         x, y = None, None, None
