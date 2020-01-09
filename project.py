@@ -8,17 +8,17 @@ class Breakout:
         self.screen = pygame.display.set_mode(size)
         self.clock = pygame.time.Clock()
         self.c = pygame.color.Color('yellow')
-        #drawing = False
+        drawing = False
         running = True
         self.p = []
         self.a = 400
         self.rectans = []
         self.right = []
         self.up = []
+        p2 = 750
         #self.polygon()
         clock = pygame.time.Clock()
-        #self.random_rects()
-        #self.load_image()
+        self.random_rects()
         #screen_rect = (0, 0, width, height)
         while running:
             flag = False
@@ -26,19 +26,17 @@ class Breakout:
                 
                 if event.type == pygame.QUIT:
                     running = False
-                if event.type == pygame.KEYDOWN:
-                    #drawing = True  # РІРєР»СЋС‡Р°РµРј СЂРµР¶РёРј СЂРёСЃРѕРІР°РЅРёСЏ
-                    # Р·Р°РїРѕРјРёРЅР°РµРј РєРѕРѕСЂРґРёРЅР°С‚С‹ РѕРґРЅРѕРіРѕ СѓРіР»Р°
-                    p1 = random.randint(1, 799)
-                    p2 = random.randint(120, 799)
-                    self.p.append([p1, p2])
-                    self.right.append(random.choice([-1, 1]))
-                    self.up.append(random.choice([-1, 1]))
-                    radius = 0
-                    
                 if event.type == pygame.MOUSEMOTION:
                     flag = True
                     self.a = event.pos[0]
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    #drawing = True  # РІРєР»СЋС‡Р°РµРј СЂРµР¶РёРј СЂРёСЃРѕРІР°РЅРёСЏ
+                    # Р·Р°РїРѕРјРёРЅР°РµРј РєРѕРѕСЂРґРёРЅР°С‚С‹ РѕРґРЅРѕРіРѕ СѓРіР»Р°
+                    self.p.append([self.a, p2])
+                    self.right.append(-1)
+                    self.up.append(-1)
+                    radius = 0
+                    
             
 
                 
@@ -46,7 +44,7 @@ class Breakout:
             self.screen.fill((0, 0, 0))
             self.rects()
             #self.polygon()
-            #self.polygon()
+            self.polygon()
             
             for i in range(len(self.p)):
                 for j in self.rectans:
@@ -65,13 +63,16 @@ class Breakout:
                     self.right[i] = -self.right[i]
                 if self.p[i][1] <= -1:
                     self.up[i] = -self.up[i]
+                if self.p[i][1] >= 810:
+                    exit()
+
             pygame.display.flip()
             self.clock.tick(200)
             
         
     def polygon(self):
         #drawing = True
-        pygame.draw.rect(self.screen, (255, 255, 255), (min(self.a, 720), 760, 80, 30))
+        pygame.draw.rect(self.screen, (255, 255, 255), (min(self.a, 720), 760, 130, 30))
 
     def random_rects(self):
         for i in range(4):
@@ -89,17 +90,6 @@ class Breakout:
     def rects(self):
         for i in self.rectans:
             pygame.draw.rect(self.screen, i[0], i[1])
-    
-    #def load_image(name, colorkey=None):
-    #    fullname = os.path.join('data', name)
-    #    image = pygame.image.load(fullname).convert()
-    #    if colorkey is not None:
-    #        if colorkey == -1:
-    #            colorkey = image.get_at((0, 0))
-    #            mage.set_colorkey(colorkey)
-    #    else:
-    #        image = image.convert_alpha()
-    #    return image
             
         
 
