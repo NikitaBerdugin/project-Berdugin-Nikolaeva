@@ -64,7 +64,8 @@ class Breakout:
                 if self.p[i][1] <= -1:
                     self.up[i] = -self.up[i]
                 if self.p[i][1] >= 810:
-                    exit()
+                    pass
+                    #exit()
 
             pygame.display.flip()
             self.clock.tick(200)
@@ -72,9 +73,10 @@ class Breakout:
         
     def polygon(self):
         #drawing = True
-        pygame.draw.rect(self.screen, (255, 255, 255), (min(self.a, 720), 760, 130, 30))
+        pygame.draw.rect(self.screen, (255, 255, 255), (min(self.a, 720), 760, 80, 30))
 
     def random_rects(self):
+        # создает кирпичи рандомного цвета
         for i in range(4):
             k = 0
             while k <= 700:
